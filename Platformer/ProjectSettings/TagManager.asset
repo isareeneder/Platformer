@@ -47,6 +47,9 @@ TagManager:
   - name: Foreground
     uniqueID: 175137723
     locked: 0
+  - name: Player
+    uniqueID: 2308063157
+    locked: 0
   m_RenderingLayers:
   - Default
   m_MigratedRenderPipelines: []
