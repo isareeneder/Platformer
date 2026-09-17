@@ -3,15 +3,34 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    [Header("Player Settings")]
+
+    [Header("Player Speed Settings")]
     [SerializeField] private float runSpeed = 5.0f;
 
     [SerializeField] private float runAcceleration = 30.0f;
 
     [SerializeField] private float runDeceleration = 40.0f;
 
+
+    [Header("Jump Settings")]
     [SerializeField] private float jumpSpeed = 5.0f;
 
+    [SerializeField] [Range(0.1f, 1.0f)] private float jumpCutMultiplier = 0.5f;
+
+    [SerializeField] private float coyoteTime = 0.1f;
+
+    [SerializeField] private float jumpBufferTime = 0.1f;
+
+    [SerializeField] private float fallGravityMultiplier = 2.0f;
+
+    float gravityScaleAtStart;
+
+    float lastGroundTime;
+
+    float jumpBufferTimer;
+
+
+    [Header("Other Settings")]
     [SerializeField] private LayerMask groundLayer;
     
     [SerializeField] private InputActionAsset inputActions;
@@ -40,6 +59,8 @@ public class Player : MonoBehaviour
         playerAnimator = GetComponentInChildren<Animator>();
 
         playerFeetCollider = GetComponent<BoxCollider2D>();
+
+        gravityScaleAtStart = playerCharacter.gravityScale;
        
         InputActionMap playerMap = inputActions.FindActionMap("Player", true);
 
@@ -67,6 +88,8 @@ public class Player : MonoBehaviour
         FlipSprite();
 
         Jump();
+
+        BetterGravity();
 
     }
 
@@ -110,14 +133,61 @@ public class Player : MonoBehaviour
 
     private void Jump()
     {
+        
+        if(jumpAction.WasReleasedThisFrame() && playerCharacter.linearVelocity.y > 0)
+        {
+            playerCharacter.linearVelocity = new Vector2(playerCharacter.linearVelocity.x, playerCharacter.linearVelocity.y * jumpCutMultiplier);
+        }
+        
         bool isGrounded = playerFeetCollider.IsTouchingLayers(GroundLayer);
 
-        if(JumpPressedThisFrame && isGrounded)
+        if(isGrounded)
         {
-            playerCharacter.linearVelocity = new Vector2(playerCharacter.linearVelocity.x, jumpSpeed);
+            //Remember a brief window after leaving ground or platform
+            lastGroundTime = coyoteTime;
         }
+        else
+        {
+            lastGroundTime -= Time.deltaTime;
+        }
+
+        if(JumpPressedThisFrame)
+        {
+            //Remember a jump pressed before landing
+            jumpBufferTimer = jumpBufferTime;
+        }
+        else
+        {
+            jumpBufferTimer -= Time.deltaTime;
+        }
+
+        if(lastGroundTime <= 0 || jumpBufferTimer <= 0)
+        {
+            return; 
+        }
+
+        playerCharacter.linearVelocity = new Vector2(playerCharacter.linearVelocity.x, jumpSpeed);
+
+        lastGroundTime = 0;
+        jumpBufferTimer = 0;
+
     }
 
+    private void BetterGravity()
+
+    {
+
+        //use stronger gravity when falling, then cap fall speed
+        float gravityMultiplier = playerCharacter.linearVelocity.y < 0 ? fallGravityMultiplier : 1f;
+
+        playerCharacter.gravityScale = gravityScaleAtStart * gravityMultiplier;
+
+        if(playerCharacter.linearVelocity.y < -jumpSpeed * fallGravityMultiplier)
+        {
+            playerCharacter.linearVelocity = new Vector2(playerCharacter.linearVelocity.x, -jumpSpeed * fallGravityMultiplier);
+        }
+
+    }
 
 
 }
