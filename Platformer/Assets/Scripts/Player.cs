@@ -21,7 +21,13 @@ public class Player : MonoBehaviour
 
     [SerializeField] private float jumpBufferTime = 0.1f;
 
+    [SerializeField] private float ladderJumpTime = 0.15f;
+
+    float jumpedOffLadderTimer;
+
     [SerializeField] private float fallGravityMultiplier = 2.0f;
+
+    [SerializeField] private float climbSpeed = 5.0f;
 
     float gravityScaleAtStart;
 
@@ -32,6 +38,8 @@ public class Player : MonoBehaviour
 
     [Header("Other Settings")]
     [SerializeField] private LayerMask groundLayer;
+
+    LayerMask climbingLayer;
     
     [SerializeField] private InputActionAsset inputActions;
    
@@ -49,6 +57,8 @@ public class Player : MonoBehaviour
 
     Animator playerAnimator;
 
+    CapsuleCollider2D playerBodyCollider;
+    
     BoxCollider2D playerFeetCollider;
 
     // Initializes its contents before the game begins
@@ -58,9 +68,12 @@ public class Player : MonoBehaviour
 
         playerAnimator = GetComponentInChildren<Animator>();
 
+        playerBodyCollider = GetComponent<CapsuleCollider2D>();
         playerFeetCollider = GetComponent<BoxCollider2D>();
 
         gravityScaleAtStart = playerCharacter.gravityScale;
+
+        climbingLayer = LayerMask.GetMask("Climbing");
        
         InputActionMap playerMap = inputActions.FindActionMap("Player", true);
 
@@ -83,13 +96,12 @@ public class Player : MonoBehaviour
     {
         MoveInput = moveAction.ReadValue<Vector2>();
 
+        // Functions for the game to play
         Run();
-
         FlipSprite();
-
         Jump();
-
         BetterGravity();
+        Climb();
 
     }
 
@@ -139,7 +151,7 @@ public class Player : MonoBehaviour
             playerCharacter.linearVelocity = new Vector2(playerCharacter.linearVelocity.x, playerCharacter.linearVelocity.y * jumpCutMultiplier);
         }
         
-        bool isGrounded = playerFeetCollider.IsTouchingLayers(GroundLayer);
+        bool isGrounded = playerFeetCollider.IsTouchingLayers(GroundLayer) || playerFeetCollider.IsTouchingLayers(climbingLayer);
 
         if(isGrounded)
         {
@@ -153,7 +165,7 @@ public class Player : MonoBehaviour
 
         if(JumpPressedThisFrame)
         {
-            //Remember a jump pressed before landing
+            //Remember a jump pressed right before landing
             jumpBufferTimer = jumpBufferTime;
         }
         else
@@ -177,7 +189,7 @@ public class Player : MonoBehaviour
 
     {
 
-        //use stronger gravity when falling, then cap fall speed
+        // Use stronger gravity when falling, then cap fall speed
         float gravityMultiplier = playerCharacter.linearVelocity.y < 0 ? fallGravityMultiplier : 1f;
 
         playerCharacter.gravityScale = gravityScaleAtStart * gravityMultiplier;
@@ -186,6 +198,35 @@ public class Player : MonoBehaviour
         {
             playerCharacter.linearVelocity = new Vector2(playerCharacter.linearVelocity.x, -jumpSpeed * fallGravityMultiplier);
         }
+
+    }
+
+    private void Climb()
+
+    {
+        
+        jumpedOffLadderTimer -= Time.deltaTime;
+
+        if(jumpedOffLadderTimer > 0 || !playerBodyCollider.IsTouchingLayers(climbingLayer))
+        {
+            playerAnimator.SetBool("climb", false);
+
+            playerCharacter.gravityScale = gravityScaleAtStart;
+
+            return;
+        }
+
+        float vMovement = MoveInput.y;
+
+        Vector2 climbingVelocity = new Vector2(MoveInput.x * runSpeed, vMovement * climbSpeed);
+
+        bool vSpeed = Mathf.Abs(playerCharacter.linearVelocity.y) > Mathf.Epsilon;
+
+        playerAnimator.SetBool("climb", true);
+
+        playerCharacter.linearVelocity = climbingVelocity;
+
+        playerCharacter.gravityScale = 0.0f;
 
     }
 
