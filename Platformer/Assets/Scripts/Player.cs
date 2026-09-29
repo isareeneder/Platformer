@@ -23,6 +23,8 @@ public class Player : MonoBehaviour
 
     [SerializeField] private float ladderJumpTime = 0.15f;
 
+    //SerializedField private float inWaterGravity = 1.0f;
+
     float jumpedOffLadderTimer;
 
     [SerializeField] private float fallGravityMultiplier = 2.0f;
@@ -210,6 +212,13 @@ public class Player : MonoBehaviour
         }
 
     }
+
+    //private void WaterGravity()
+    //if(playerBodyCollider.IsTouchingLayers(waterLayer))
+    //{ playerCharacter.gravityScale = gravityScaleAtStart * inWaterGravity; }
+
+    //if(!playerBodyCollider.IsTouchingLayers(waterLayer))
+    // { return }
 
     private void Climb()
 
