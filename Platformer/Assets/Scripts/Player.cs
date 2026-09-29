@@ -23,7 +23,7 @@ public class Player : MonoBehaviour
 
     [SerializeField] private float ladderJumpTime = 0.15f;
 
-    //SerializedField private float inWaterGravity = 1.0f;
+    [SerializeField] private float inWaterGravity = 0.1f;
 
     float jumpedOffLadderTimer;
 
@@ -42,6 +42,7 @@ public class Player : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
 
     LayerMask climbingLayer;
+    LayerMask waterLayer; 
     
     [SerializeField] private InputActionAsset inputActions;
    
@@ -76,6 +77,7 @@ public class Player : MonoBehaviour
         gravityScaleAtStart = playerCharacter.gravityScale;
 
         climbingLayer = LayerMask.GetMask("Climbing");
+        waterLayer = LayerMask.GetMask("Water");
        
         InputActionMap playerMap = inputActions.FindActionMap("Player", true);
 
@@ -104,6 +106,7 @@ public class Player : MonoBehaviour
         FlipSprite();
         Climb();
         BetterGravity();
+        WaterGravity();
 
     }
 
@@ -213,12 +216,19 @@ public class Player : MonoBehaviour
 
     }
 
-    //private void WaterGravity()
-    //if(playerBodyCollider.IsTouchingLayers(waterLayer))
-    //{ playerCharacter.gravityScale = gravityScaleAtStart * inWaterGravity; }
+    private void WaterGravity()
+    
+    {
+        if(playerBodyCollider.IsTouchingLayers(waterLayer))
+        {
+            playerCharacter.gravityScale = (gravityScaleAtStart * inWaterGravity); 
+        }
+        else
+        {
+            playerCharacter.gravityScale = gravityScaleAtStart;
+        }
 
-    //if(!playerBodyCollider.IsTouchingLayers(waterLayer))
-    // { return }
+    }
 
     private void Climb()
 
