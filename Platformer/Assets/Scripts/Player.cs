@@ -23,8 +23,6 @@ public class Player : MonoBehaviour
 
     [SerializeField] private float ladderJumpTime = 0.15f;
 
-    [SerializeField] private float inWaterGravity = 0.1f;
-
     float jumpedOffLadderTimer;
 
     [SerializeField] private float fallGravityMultiplier = 2.0f;
@@ -37,6 +35,8 @@ public class Player : MonoBehaviour
 
     float jumpBufferTimer;
 
+    [Header("Water Settings")]
+    [SerializeField] private float inWaterGravity = 0.1f;
 
     [Header("Other Settings")]
     [SerializeField] private LayerMask groundLayer;
@@ -226,19 +226,7 @@ public class Player : MonoBehaviour
 
     }
 
-    private void WaterGravity()
-    
-    {
-        if(playerBodyCollider.IsTouchingLayers(LayerMask.GetMask("Water")))
-        {
-            playerCharacter.gravityScale = (gravityScaleAtStart * inWaterGravity); 
-        }
-        else
-        {
-            playerCharacter.gravityScale = gravityScaleAtStart;
-        }
-
-    }
+   
 
     private void Climb()
 
@@ -291,5 +279,18 @@ public class Player : MonoBehaviour
 
     }
 
+    private void WaterGravity()
+    
+    {
+        if(playerBodyCollider.IsTouchingLayers(LayerMask.GetMask("Water")))
+        {
+            playerCharacter.gravityScale = gravityScaleAtStart * inWaterGravity; 
+        }
+        else
+        {
+            playerCharacter.gravityScale = gravityScaleAtStart;
+        }
+
+    }
 
 }
