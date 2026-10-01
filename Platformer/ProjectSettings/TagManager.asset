@@ -15,9 +15,9 @@ TagManager:
   - Player
   - Background
   - Climbing
-  - Water
-  - Enemy
   - 
+  - Enemy
+  - Hazards
   - 
   - 
   - 
@@ -44,6 +44,9 @@ TagManager:
   - name: Background
     uniqueID: 1623874617
     locked: 0
+  - name: Background 2
+    uniqueID: 233209175
+    locked: 0
   - name: Water
     uniqueID: 3233150865
     locked: 0
@@ -52,6 +55,9 @@ TagManager:
     locked: 0
   - name: Climbing
     uniqueID: 2395083625
+    locked: 0
+  - name: Hazards
+    uniqueID: 3759173401
     locked: 0
   - name: Enemy
     uniqueID: 2151431129

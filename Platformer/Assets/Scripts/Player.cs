@@ -42,8 +42,9 @@ public class Player : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
 
     LayerMask climbingLayer;
-    LayerMask waterLayer; 
     
+    [SerializeField] private Vector2 deathSeq = new Vector2(25f, 25f);
+
     [SerializeField] private InputActionAsset inputActions;
    
     InputAction moveAction;
@@ -64,6 +65,8 @@ public class Player : MonoBehaviour
     
     BoxCollider2D playerFeetCollider;
 
+    bool isAlive = true;
+
     // Initializes its contents before the game begins
     void Awake ()
     {
@@ -77,7 +80,6 @@ public class Player : MonoBehaviour
         gravityScaleAtStart = playerCharacter.gravityScale;
 
         climbingLayer = LayerMask.GetMask("Climbing");
-        waterLayer = LayerMask.GetMask("Water");
        
         InputActionMap playerMap = inputActions.FindActionMap("Player", true);
 
@@ -98,6 +100,13 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        if(!isAlive)
+        {
+            return;
+        }
+
+
         MoveInput = moveAction.ReadValue<Vector2>();
 
         // Functions for the game to play
@@ -107,6 +116,7 @@ public class Player : MonoBehaviour
         Climb();
         BetterGravity();
         WaterGravity();
+        Die();
 
     }
 
@@ -219,7 +229,7 @@ public class Player : MonoBehaviour
     private void WaterGravity()
     
     {
-        if(playerBodyCollider.IsTouchingLayers(waterLayer))
+        if(playerBodyCollider.IsTouchingLayers(LayerMask.GetMask("Water")))
         {
             playerCharacter.gravityScale = (gravityScaleAtStart * inWaterGravity); 
         }
@@ -264,6 +274,21 @@ public class Player : MonoBehaviour
         playerAnimator.SetBool("climb", vSpeed);
 
         playerCharacter.gravityScale = 0.0f;
+    }
+
+    private void Die()
+    {
+
+        if(playerBodyCollider.IsTouchingLayers(LayerMask.GetMask("Enemy", "Hazards")) || playerFeetCollider.IsTouchingLayers(LayerMask.GetMask("Enemy", "Hazards")))
+        
+        {
+            isAlive = false;
+            
+            playerAnimator.SetTrigger("die"); 
+
+            playerCharacter.linearVelocity = deathSeq;
+        }
+
     }
 
 
