@@ -23914,7 +23914,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6850890413810723911, guid: 76f23fdf39a88eb478c2e08fb6a456bc, type: 3}
       propertyPath: FrequencyGain
-      value: 0.1
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 7657089106058662276, guid: 76f23fdf39a88eb478c2e08fb6a456bc, type: 3}
       propertyPath: m_LocalPosition.x
@@ -23977,10 +23977,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7389943475240558626, guid: 5f9147631238b0c49befdc06b32a3ed3, type: 3}
-      propertyPath: deathSFX
-      value: 
-      objectReference: {fileID: 8300000, guid: 33a332fd405108a41b6ca7222a150817, type: 3}
     - target: {fileID: 8476810092384094607, guid: 5f9147631238b0c49befdc06b32a3ed3, type: 3}
       propertyPath: m_Name
       value: Player

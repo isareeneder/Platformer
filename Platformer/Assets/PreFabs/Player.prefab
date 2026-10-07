@@ -129,6 +129,7 @@ MonoBehaviour:
   deathSeq: {x: 5, y: 5}
   inputActions: {fileID: -944628639613478452, guid: 89d2b3b6492cfcb40a76e4cc4e792484, type: 3}
   jumpSFX: {fileID: 8300000, guid: 73ee18c1cdbf4df4690b09f996600442, type: 3}
+  deathSFX: {fileID: 8300000, guid: 33a332fd405108a41b6ca7222a150817, type: 3}
 --- !u!61 &8826779340933737004
 BoxCollider2D:
   m_ObjectHideFlags: 0
