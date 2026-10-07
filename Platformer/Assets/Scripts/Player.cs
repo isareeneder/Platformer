@@ -36,7 +36,7 @@ public class Player : MonoBehaviour
     float jumpBufferTimer;
 
     [Header("Water Settings")]
-    [SerializeField] private float inWaterGravity = 0.1f;
+    [SerializeField] private float inWaterGravity = 0.0001f;
 
     [Header("Other Settings")]
     [SerializeField] private LayerMask groundLayer;
@@ -66,6 +66,10 @@ public class Player : MonoBehaviour
     BoxCollider2D playerFeetCollider;
 
     bool isAlive = true;
+
+    [Header("Sounds")]
+    [SerializeField] private AudioClip jumpSFX;
+    [SerializeField] private AudioClip deathSFX;
 
     // Initializes its contents before the game begins
     void Awake ()
@@ -161,15 +165,23 @@ public class Player : MonoBehaviour
 
     private void Jump()
     {
+        if(jumpAction.WasPressedThisFrame())
+        {
+            AudioSource.PlayClipAtPoint(jumpSFX, Camera.main.transform.position);
+        }
 
-        if(jumpAction.WasReleasedThisFrame() && playerCharacter.linearVelocity.y > 0)
+
+
+        if (jumpAction.WasReleasedThisFrame() && playerCharacter.linearVelocity.y > 0)
         {
             playerCharacter.linearVelocity = new Vector2(playerCharacter.linearVelocity.x, playerCharacter.linearVelocity.y * jumpCutMultiplier);
-        }
-        
-        bool isGrounded = playerFeetCollider.IsTouchingLayers(GroundLayer) || playerBodyCollider.IsTouchingLayers(climbingLayer);
 
-        if(isGrounded)
+        }
+
+
+        bool isGrounded = playerFeetCollider.IsTouchingLayers(GroundLayer) || playerBodyCollider.IsTouchingLayers(climbingLayer) || playerFeetCollider.IsTouchingLayers(climbingLayer);
+
+        if (isGrounded)
         {
             //Remember a brief window after leaving ground or platform
             lastGroundTime = coyoteTime;
@@ -200,7 +212,6 @@ public class Player : MonoBehaviour
         jumpBufferTimer = 0;
 
         jumpedOffLadderTimer = ladderJumpTime;
-
 
     }
 
@@ -275,6 +286,9 @@ public class Player : MonoBehaviour
             playerAnimator.SetTrigger("die"); 
 
             playerCharacter.linearVelocity = deathSeq;
+
+            AudioSource.PlayClipAtPoint(deathSFX, Camera.main.transform.position);
+
         }
 
     }
@@ -282,11 +296,12 @@ public class Player : MonoBehaviour
     private void WaterGravity()
     
     {
-        if(playerBodyCollider.IsTouchingLayers(LayerMask.GetMask("Water")))
+        if(playerBodyCollider.IsTouchingLayers(LayerMask.GetMask("Water")) || playerFeetCollider.IsTouchingLayers(LayerMask.GetMask("Water")))
         {
-            playerCharacter.gravityScale = gravityScaleAtStart * inWaterGravity; 
+            playerCharacter.gravityScale = inWaterGravity; 
+
         }
-        else
+       else
         {
             playerCharacter.gravityScale = gravityScaleAtStart;
         }
