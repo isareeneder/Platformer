@@ -47,9 +47,6 @@ TagManager:
   - name: Background 2
     uniqueID: 233209175
     locked: 0
-  - name: Water
-    uniqueID: 3233150865
-    locked: 0
   - name: Foreground
     uniqueID: 175137723
     locked: 0
@@ -67,6 +64,9 @@ TagManager:
     locked: 0
   - name: Interactables
     uniqueID: 4115504071
+    locked: 0
+  - name: Water
+    uniqueID: 3233150865
     locked: 0
   m_RenderingLayers:
   - Default
