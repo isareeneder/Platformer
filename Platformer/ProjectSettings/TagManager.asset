@@ -59,11 +59,11 @@ TagManager:
   - name: Enemy
     uniqueID: 2151431129
     locked: 0
-  - name: Player
-    uniqueID: 2308063157
-    locked: 0
   - name: Interactables
     uniqueID: 4115504071
+    locked: 0
+  - name: Player
+    uniqueID: 2308063157
     locked: 0
   - name: Water
     uniqueID: 3233150865
