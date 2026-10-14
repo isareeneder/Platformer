@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 454211348014192830}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.5199986, y: 0.0000014305115, z: -10}
+  m_LocalPosition: {x: -2.5199976, y: -0.9333334, z: -11.205}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -93,14 +93,14 @@ MonoBehaviour:
   CameraDistance: 10
   DeadZoneDepth: 7.75
   Composition:
-    ScreenPosition: {x: 0.00000037625432, y: 0.00000014901161}
+    ScreenPosition: {x: 0.00000035762787, y: -0.0777778}
     DeadZone:
       Enabled: 0
-      Size: {x: 0.071001805, y: 0.09526229}
+      Size: {x: 0.071001805, y: 0}
     HardLimits:
       Enabled: 1
-      Size: {x: 0.15450753, y: 0.14403811}
-      Offset: {x: 0, y: 0.4}
+      Size: {x: 0.17, y: 0.3592597}
+      Offset: {x: 0, y: -0.66}
   CenterOnActivate: 0
   TargetOffset: {x: 0, y: 1, z: 0}
   Damping: {x: 2, y: 2, z: 1}
@@ -207,7 +207,7 @@ Transform:
   m_GameObject: {fileID: 3707865500841788273}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.519998, y: 0.0000014305115, z: -10}
+  m_LocalPosition: {x: -2.5199971, y: 0.00000047683716, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -336,7 +336,7 @@ Transform:
   m_GameObject: {fileID: 5336378328659842027}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.324235, y: -4.9646497, z: -10}
+  m_LocalPosition: {x: -2.324626, y: -5.8979797, z: -11.205}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -599,7 +599,7 @@ Transform:
   m_GameObject: {fileID: 7667796846760582569}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.5199971, y: 0.0000009536743, z: -10}
+  m_LocalPosition: {x: -2.5199962, y: 0.00000047683716, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
