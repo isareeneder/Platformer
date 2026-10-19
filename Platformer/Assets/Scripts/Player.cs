@@ -43,13 +43,15 @@ public class Player : MonoBehaviour
 
     LayerMask climbingLayer;
     
-    [SerializeField] private Vector2 deathSeq = new Vector2(25f, 25f);
+    [SerializeField] private Vector2 deathSeq = new Vector2(10f, 10f);
 
     [SerializeField] private InputActionAsset inputActions;
    
     InputAction moveAction;
 
     InputAction jumpAction;
+
+    InputAction attackAction;
 
     public bool JumpPressedThisFrame => jumpAction != null && jumpAction.WasPressedThisFrame();
 
@@ -70,6 +72,23 @@ public class Player : MonoBehaviour
     [Header("Sounds")]
     [SerializeField] private AudioClip jumpSFX;
     [SerializeField] private AudioClip deathSFX;
+    [SerializeField] private AudioClip attackSFX;
+
+    //Attacking stuff
+    //[Header("Attack Settings")]
+    public Transform attackPoint;
+    public float attackRange = 0.5f;
+    public LayerMask enemyLayers;
+
+    public int attackDamage = 1;
+
+    public float attackRate = 2f;
+    float nextAttackTime = 0f;
+
+    //Reference to child animator
+
+    [SerializeField] private Animator childAnimator;
+
 
     // Initializes its contents before the game begins
     void Awake ()
@@ -91,6 +110,8 @@ public class Player : MonoBehaviour
 
         jumpAction = playerMap.FindAction("Jump", true);
 
+        attackAction = playerMap.FindAction("Attack", true);
+
         playerMap.Enable();
 
     }
@@ -98,7 +119,7 @@ public class Player : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        //animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -119,10 +140,51 @@ public class Player : MonoBehaviour
         FlipSprite();
         Climb();
         BetterGravity();
-        WaterGravity();
         Die();
+        WaterGravity();
+
+
+        if (Time.time >= nextAttackTime)
+        {
+
+            if (Mouse.current.leftButton.wasPressedThisFrame)
+            {
+                childAnimator.SetTrigger("Magic");
+                playerAnimator.SetTrigger("Attack");
+                Attack();
+
+                //nextAttackTime = Time.time + 1f / attackRate;
+
+            }
+        }
 
     }
+
+    private void Attack()
+    {
+       
+
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
+     
+        foreach(Collider2D enemy in hitEnemies)
+        {
+            enemy.GetComponent<Enemy>().TakeDamage(attackDamage);
+            
+            Debug.Log("We hit " + enemy.name);
+        }
+
+        AudioSource.PlayClipAtPoint(attackSFX, Camera.main.transform.position, 0.5f);
+
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        if (attackPoint == null)
+            return;
+        
+        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+    }
+
 
     private void Run()
     {
@@ -165,9 +227,9 @@ public class Player : MonoBehaviour
 
     private void Jump()
     {
-        if(jumpAction.WasPressedThisFrame())
+        //if(jumpAction.WasPressedThisFrame())
         {
-            AudioSource.PlayClipAtPoint(jumpSFX, Camera.main.transform.position);
+            //AudioSource.PlayClipAtPoint(jumpSFX, Camera.main.transform.position, 0.5f);
         }
 
 
@@ -212,6 +274,7 @@ public class Player : MonoBehaviour
         jumpBufferTimer = 0;
 
         jumpedOffLadderTimer = ladderJumpTime;
+        AudioSource.PlayClipAtPoint(jumpSFX, Camera.main.transform.position, 0.4f);
 
     }
 
@@ -244,35 +307,27 @@ public class Player : MonoBehaviour
     {
         jumpedOffLadderTimer -= Time.deltaTime;
 
-        bool onLadder = playerBodyCollider.IsTouchingLayers(climbingLayer);
-        bool wasClimbing = playerAnimator.GetBool("climb");
-
-        if(jumpedOffLadderTimer > 0 || !onLadder)
+        if (jumpedOffLadderTimer > 0 || !playerBodyCollider.IsTouchingLayers(climbingLayer))
         {
             playerAnimator.SetBool("climb", false);
 
             playerCharacter.gravityScale = gravityScaleAtStart;
 
-            // No launch off climbing layer top
-            if(!onLadder && wasClimbing && jumpedOffLadderTimer <= 0)
-            {
-                playerCharacter.linearVelocity = new Vector2(playerCharacter.linearVelocity.x, 0f);
-            }
-
+            // Will stop this function unless true
             return;
         }
 
+        // Support both the Vertical axis and the standard climb keys
         float vMovement = MoveInput.y;
 
-        Vector2 climbingVelocity = new Vector2(MoveInput.x * runSpeed, vMovement * climbSpeed);
-
-        playerCharacter.linearVelocity = climbingVelocity;
-
-        bool vSpeed = Mathf.Abs(playerCharacter.linearVelocity.y) > Mathf.Epsilon;
-
-        playerAnimator.SetBool("climb", vSpeed);
+        // Drop horizontal momentum so the Player doesn't glide sideways on the ladder
+        Vector2 climbVelocity = new Vector2(MoveInput.x * runSpeed, vMovement * climbSpeed);
+        playerCharacter.linearVelocity = climbVelocity;
 
         playerCharacter.gravityScale = 0.0f;
+
+        bool vSpeed = Mathf.Abs(playerCharacter.linearVelocity.y) > Mathf.Epsilon;
+        playerAnimator.SetBool("climb", vSpeed);
     }
 
     private void Die()
@@ -287,7 +342,7 @@ public class Player : MonoBehaviour
 
             playerCharacter.linearVelocity = deathSeq;
 
-            AudioSource.PlayClipAtPoint(deathSFX, Camera.main.transform.position);
+            AudioSource.PlayClipAtPoint(deathSFX, Camera.main.transform.position, 0.8f);
 
             FindFirstObjectByType<GameSession>().ProcessPlayerDeath();
 

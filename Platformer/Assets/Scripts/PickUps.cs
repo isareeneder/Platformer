@@ -18,7 +18,7 @@ public class PickUps : MonoBehaviour
 
         wasCollected = true;
 
-        AudioSource.PlayClipAtPoint(coinPickUpSFX, Camera.main.transform.position);
+        AudioSource.PlayClipAtPoint(coinPickUpSFX, Camera.main.transform.position, 0.5f);
         
         Destroy (gameObject);
    }
