@@ -30,8 +30,6 @@ public class Enemy : MonoBehaviour
     {
         currentHealth -= damage;
 
-
-
         if (currentHealth <= 0)
         {
             Die();
@@ -59,6 +57,11 @@ public class Enemy : MonoBehaviour
         else
         {
         enemyCharacter.linearVelocity = new Vector2(-moveSpeed, 0);
+        }
+
+        if (enemyCharacter.IsTouchingLayers(LayerMask.GetMask("Hazards")))
+        {
+            Die();
         }
 
     }

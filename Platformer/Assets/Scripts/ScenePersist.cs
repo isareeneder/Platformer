@@ -1,39 +1,35 @@
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class ScenePersist : MonoBehaviour
 {
+    private static ScenePersist instance;
 
-    //int startingSceneIndex;
-     
-    //void Awake()
-    //{
-       // int numGameSessions = FindObjectsByType<ScenePersist>().Length;
+    private int startingSceneIndex;
 
-        //if(numGameSessions > 1)
-        //{
-            //Destroy(gameObject);
-        //}
-        //else
-        //{
-            //DontDestroyOnLoad(gameObject);
-        //}
-    //}
+    void Awake()
+    {
+        startingSceneIndex = SceneManager.GetActiveScene().buildIndex;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    //void Start()
-    //{
-        //startingSceneIndex = sceneManager.GetActiveScene().buildIndex;
-    //}
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            if (instance.startingSceneIndex != this.startingSceneIndex)
+            {
+                Destroy(instance.gameObject);
 
-    // Update is called once per frame
-    //void Update()
-    //{
-        //int currentSceneIndex = sceneManager.GetActiveScene().buildIndex;
-
-        //if(currentSceneIndex != startingSceneIndex)
-        //{
-            //Destroy(gameObject);
-        //}
-    //}
+                instance = this;
+                DontDestroyOnLoad(gameObject);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+        }
+    }
 }

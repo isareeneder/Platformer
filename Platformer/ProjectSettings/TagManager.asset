@@ -71,6 +71,9 @@ TagManager:
   - name: Water
     uniqueID: 3233150865
     locked: 0
+  - name: Very Foreground
+    uniqueID: 1556989939
+    locked: 0
   m_RenderingLayers:
   - Default
   m_MigratedRenderPipelines: []

@@ -38,6 +38,7 @@ public class Player : MonoBehaviour
     [Header("Water Settings")]
     [SerializeField] private float inWaterGravity = 0.0001f;
 
+
     [Header("Other Settings")]
     [SerializeField] private LayerMask groundLayer;
 
@@ -89,36 +90,52 @@ public class Player : MonoBehaviour
 
     [SerializeField] private Animator childAnimator;
 
+    //Water Settings
+
+    //Other Settings
+
 
     // Initializes its contents before the game begins
     void Awake ()
     {
+        // Grabbing player colliders and animators
         playerCharacter = GetComponent<Rigidbody2D>();
-
         playerAnimator = GetComponentInChildren<Animator>();
-
         playerBodyCollider = GetComponent<CapsuleCollider2D>();
         playerFeetCollider = GetComponent<BoxCollider2D>();
 
+        // Gravity is set
         gravityScaleAtStart = playerCharacter.gravityScale;
 
+        // Layers
         climbingLayer = LayerMask.GetMask("Climbing");
-       
+
+        //Trying this
+        if (inputActions == null)
+        {
+            Debug.LogWarning($"[Input Setup] '{gameObject.name}' is missing its Input Actions Asset. Skipping input binding.", this);
+            return;
+        }
+        
+        
         InputActionMap playerMap = inputActions.FindActionMap("Player", true);
 
+        // Player base inputs reference
         moveAction = playerMap.FindAction("Move", true);
-
         jumpAction = playerMap.FindAction("Jump", true);
-
         attackAction = playerMap.FindAction("Attack", true);
 
         playerMap.Enable();
+
+
+      
 
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        
         //animator = GetComponent<Animator>();
     }
 
@@ -126,7 +143,7 @@ public class Player : MonoBehaviour
     void Update()
     {
 
-        if(!isAlive)
+        if(moveAction == null || !isAlive)
         {
             return;
         }
@@ -149,11 +166,12 @@ public class Player : MonoBehaviour
 
             if (Mouse.current.leftButton.wasPressedThisFrame)
             {
-                childAnimator.SetTrigger("Magic");
-                playerAnimator.SetTrigger("Attack");
                 Attack();
 
-                //nextAttackTime = Time.time + 1f / attackRate;
+                childAnimator.SetTrigger("Magic");
+                playerAnimator.SetTrigger("Attack");
+
+                nextAttackTime = Time.time + 1f / attackRate;
 
             }
         }
@@ -344,25 +362,42 @@ public class Player : MonoBehaviour
 
             AudioSource.PlayClipAtPoint(deathSFX, Camera.main.transform.position, 0.8f);
 
-            FindFirstObjectByType<GameSession>().ProcessPlayerDeath();
+            FindAnyObjectByType<GameSession>().ProcessPlayerDeath();
 
         }
 
+    }
+
+    private bool isInWater = false; // Add to top of script
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Water"))
+        {
+            isInWater = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Water"))
+        {
+            isInWater = false;
+        }
     }
 
     private void WaterGravity()
-    
     {
-        if(playerBodyCollider.IsTouchingLayers(LayerMask.GetMask("Water")) || playerFeetCollider.IsTouchingLayers(LayerMask.GetMask("Water")))
+        if (isInWater)
         {
-            playerCharacter.gravityScale = inWaterGravity; 
-
+            Debug.Log("gravity lowered");
+            playerCharacter.gravityScale = inWaterGravity;
         }
-       else
+        else
         {
             playerCharacter.gravityScale = gravityScaleAtStart;
         }
-
     }
+
 
 }

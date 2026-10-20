@@ -20,7 +20,7 @@ public class PickUps : MonoBehaviour
 
         wasCollected = true;
 
-        FindFirstObjectByType<GameSession>().ProcessPlayerScore(pickupValue);
+        FindAnyObjectByType<GameSession>().ProcessPlayerScore(pickupValue);
 
         AudioSource.PlayClipAtPoint(coinPickUpSFX, Camera.main.transform.position, 0.5f);
         
