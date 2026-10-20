@@ -313,10 +313,36 @@ MonoBehaviour:
   m_GameObject: {fileID: 8476810092384094607}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7fcd587dc9a41c4a9348a92d60755f1, type: 3}
+  m_Script: {fileID: 11500000, guid: b06c68606cbb9414fbb34fa83e6ae102, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  animator: {fileID: 5579814427269830805}
+  runSpeed: 5
+  runAcceleration: 30
+  runDeceleration: 40
+  jumpSpeed: 5
+  jumpCutMultiplier: 0.5
+  coyoteTime: 0.1
+  jumpBufferTime: 0.1
+  ladderJumpTime: 0.15
+  fallGravityMultiplier: 2
+  climbSpeed: 5
+  inWaterGravity: 0.0001
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  deathSeq: {x: 10, y: 10}
+  inputActions: {fileID: 0}
+  jumpSFX: {fileID: 0}
+  deathSFX: {fileID: 0}
+  attackSFX: {fileID: 0}
+  attackPoint: {fileID: 0}
+  attackRange: 0.5
+  enemyLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  attackDamage: 1
+  attackRate: 2
+  childAnimator: {fileID: 0}
 --- !u!212 &365414543363461722
 SpriteRenderer:
   serializedVersion: 3
