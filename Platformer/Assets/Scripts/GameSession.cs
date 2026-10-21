@@ -1,10 +1,11 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using TMPro; 
+using TMPro;
 
 public class GameSession : MonoBehaviour
 {
+    public static GameSession instance; // this was added
 
     [Header("Player Counts")]
     [SerializeField] int playerLives = 3;
@@ -19,13 +20,38 @@ public class GameSession : MonoBehaviour
     {
         int numGameSessions = FindObjectsByType<GameSession>().Length;
 
-        if(numGameSessions > 1)
+        if (numGameSessions > 1)
         {
             Destroy(gameObject);
+            return; // this was added
         }
         else
         {
+            instance = this; // this was added
             DontDestroyOnLoad(gameObject);
+        }
+    }
+
+    public int PlayerScore => playerScore; // this was added
+
+    void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.buildIndex == 1)
+        {
+            playerScore = 0;
+            playerLives = 3;
+            RefreshUI();
+            Debug.Log("GameSession: Level 1 detected. Score reset to 0!");
         }
     }
 
@@ -33,11 +59,11 @@ public class GameSession : MonoBehaviour
     {
         RefreshUI();
     }
-    
+
     private void RefreshUI()
     {
-        lives.text = playerLives.ToString();
-        score.text = playerScore.ToString();
+        if (lives != null) lives.text = playerLives.ToString();
+        if (score != null) score.text = playerScore.ToString();
     }
 
     public void ProcessPlayerDeath()
@@ -48,40 +74,35 @@ public class GameSession : MonoBehaviour
     public void ProcessPlayerScore(int points)
     {
         playerScore += points;
-        RefreshUI(); 
+        RefreshUI();
     }
 
     IEnumerator DeathSequence()
     {
         yield return new WaitForSecondsRealtime(deathDelay);
-        
-        if(playerLives > 1)
+
+        if (playerLives > 1)
         {
             SubtractLife();
         }
         else
         {
             ResetGameSession();
-
             playerLives = 3;
         }
     }
 
     private void ResetGameSession()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(0); 
     }
 
     private void SubtractLife()
     {
         playerLives--;
-        
         RefreshUI();
 
         var currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-
         SceneManager.LoadScene(currentSceneIndex);
-
     }
-
 }

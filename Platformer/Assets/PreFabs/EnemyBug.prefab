@@ -53,7 +53,7 @@ MonoBehaviour:
     rid: 1140068644309434576
   m_FalloffIntensity: 0.457
   m_Color: {r: 1, g: 0.69179344, b: 0.3726415, a: 1}
-  m_Intensity: 0.27
+  m_Intensity: 1.05
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
   m_ApplyToSortingLayers: 00000000395cca603b110be0577de60dbb63700a6913c28e196f10e0d93b3c80c79b4df5b53f928991f7b5c0
@@ -314,7 +314,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   moveSpeed: 1
   animator: {fileID: 0}
-  maxHealth: 3
+  maxHealth: 1
 --- !u!61 &7053986042801454708
 BoxCollider2D:
   m_ObjectHideFlags: 0

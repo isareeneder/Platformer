@@ -3,7 +3,7 @@ using UnityEngine;
 public class PickUps : MonoBehaviour
 {
 
-    [SerializeField] private int pickupValue = 100;
+    [SerializeField] private int pickupValue = 1;
 
     [SerializeField] private AudioClip coinPickUpSFX;
 

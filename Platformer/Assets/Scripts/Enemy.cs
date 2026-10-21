@@ -8,6 +8,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private Animator animator;
 
     Rigidbody2D enemyCharacter;
+    Collider2D enemyCollider;
 
     //[Header("Health")]
     public int maxHealth = 3;
@@ -19,6 +20,7 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         enemyCharacter = GetComponent<Rigidbody2D>();
+        enemyCollider = GetComponent<Collider2D>();
 
         currentHealth = maxHealth;
 
@@ -48,15 +50,15 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-        if(IsFacingRight())
+
+        if (IsFacingRight())
         {
-        enemyCharacter.linearVelocity = new Vector2(moveSpeed, 0);
+            enemyCharacter.linearVelocity = new Vector2(moveSpeed, 0);
         }
 
         else
         {
-        enemyCharacter.linearVelocity = new Vector2(-moveSpeed, 0);
+            enemyCharacter.linearVelocity = new Vector2(-moveSpeed, 0);
         }
 
         if (enemyCharacter.IsTouchingLayers(LayerMask.GetMask("Hazards")))
@@ -78,3 +80,5 @@ public class Enemy : MonoBehaviour
     }
 
 }
+
+

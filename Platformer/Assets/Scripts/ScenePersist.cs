@@ -1,4 +1,3 @@
-
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -33,3 +32,4 @@ public class ScenePersist : MonoBehaviour
         }
     }
 }
+

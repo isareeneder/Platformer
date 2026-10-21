@@ -35,9 +35,6 @@ public class Player : MonoBehaviour
 
     float jumpBufferTimer;
 
-    [Header("Water Settings")]
-    [SerializeField] private float inWaterGravity = 0.0001f;
-
 
     [Header("Other Settings")]
     [SerializeField] private LayerMask groundLayer;
@@ -89,10 +86,6 @@ public class Player : MonoBehaviour
     //Reference to child animator
 
     [SerializeField] private Animator childAnimator;
-
-    //Water Settings
-
-    //Other Settings
 
 
     // Initializes its contents before the game begins
@@ -158,8 +151,6 @@ public class Player : MonoBehaviour
         Climb();
         BetterGravity();
         Die();
-        WaterGravity();
-
 
         if (Time.time >= nextAttackTime)
         {
@@ -245,11 +236,6 @@ public class Player : MonoBehaviour
 
     private void Jump()
     {
-        //if(jumpAction.WasPressedThisFrame())
-        {
-            //AudioSource.PlayClipAtPoint(jumpSFX, Camera.main.transform.position, 0.5f);
-        }
-
 
 
         if (jumpAction.WasReleasedThisFrame() && playerCharacter.linearVelocity.y > 0)
@@ -366,37 +352,6 @@ public class Player : MonoBehaviour
 
         }
 
-    }
-
-    private bool isInWater = false; // Add to top of script
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Water"))
-        {
-            isInWater = true;
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Water"))
-        {
-            isInWater = false;
-        }
-    }
-
-    private void WaterGravity()
-    {
-        if (isInWater)
-        {
-            Debug.Log("gravity lowered");
-            playerCharacter.gravityScale = inWaterGravity;
-        }
-        else
-        {
-            playerCharacter.gravityScale = gravityScaleAtStart;
-        }
     }
 
 

@@ -281,4 +281,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebf9c92e51df7254dbf4af9f75e9bd3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PickUps
+  pickupValue: 1
   coinPickUpSFX: {fileID: 8300000, guid: 8d90887b32b56234e890dbb2d0afe908, type: 3}
