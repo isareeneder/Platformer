@@ -11180,7 +11180,7 @@ MonoBehaviour:
   m_SelectionSources:
     rid: 2666174267188838400
   m_FalloffIntensity: 0.5
-  m_Color: {r: 0.4301949, g: 0.37486652, b: 0.6792453, a: 1}
+  m_Color: {r: 0.68193954, g: 0.6448024, b: 0.8490566, a: 1}
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0

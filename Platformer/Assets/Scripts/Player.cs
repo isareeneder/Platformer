@@ -336,23 +336,51 @@ public class Player : MonoBehaviour
 
     private void Die()
     {
+        if (!isAlive) return;
 
-        if(playerBodyCollider.IsTouchingLayers(LayerMask.GetMask("Enemy", "Hazards")) || playerFeetCollider.IsTouchingLayers(LayerMask.GetMask("Enemy", "Hazards")))
-        
+        if (playerBodyCollider.IsTouchingLayers(LayerMask.GetMask("Hazards")) ||
+            playerFeetCollider.IsTouchingLayers(LayerMask.GetMask("Hazards")))
         {
-            isAlive = false;
-            
-            playerAnimator.SetTrigger("die"); 
+            TriggerDeathSequence();
+        }
+    }
 
-            playerCharacter.linearVelocity = deathSeq;
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (!isAlive) return;
+
+        Enemy enemy = collision.GetComponent<Enemy>();
+
+        if (enemy != null)
+        {
+            if (!enemy.isDead)
+            {
+                Debug.Log("Player hit a living enemy");
+                TriggerDeathSequence();
+            }
+            else
+            {
+                Debug.Log("Player passed through a dead enemy safely");
+            }
+        }
+    }
+
+    private void TriggerDeathSequence()
+    {
+        isAlive = false;
+        playerAnimator.SetTrigger("die");
+        playerCharacter.linearVelocity = deathSeq;
+
+        if (deathSFX != null)
+        {
             AudioSource.PlayClipAtPoint(deathSFX, Camera.main.transform.position, 0.8f);
-
-            FindAnyObjectByType<GameSession>().ProcessPlayerDeath();
-
         }
 
+        FindAnyObjectByType<GameSession>().ProcessPlayerDeath();
     }
+
+
 
 
 }

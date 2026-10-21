@@ -32509,8 +32509,8 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -12.984949, y: 10.97415}
-      - {x: -12.9960375, y: -11.042021}
+    - - {x: -12.790848, y: 11.05179}
+      - {x: -12.918397, y: -11.042021}
       - {x: 65.04335, y: -11.04626}
       - {x: 64.99599, y: 11.075231}
   m_UseDelaunayMesh: 1
@@ -35322,6 +35322,10 @@ PrefabInstance:
     - target: {fileID: 8476810092384094607, guid: 5f9147631238b0c49befdc06b32a3ed3, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 8978797274501401779, guid: 5f9147631238b0c49befdc06b32a3ed3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.1
       objectReference: {fileID: 0}
     - target: {fileID: 8994071348803079077, guid: 5f9147631238b0c49befdc06b32a3ed3, type: 3}
       propertyPath: m_Sprite
