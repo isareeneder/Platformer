@@ -12070,7 +12070,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d139a162ab7c1524d8410b7932f1b98d, type: 2}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -26003,7 +26003,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2880220955418984613, guid: 76f23fdf39a88eb478c2e08fb6a456bc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.7009974
+      value: -3.7898865
+      objectReference: {fileID: 0}
+    - target: {fileID: 2880220955418984613, guid: 76f23fdf39a88eb478c2e08fb6a456bc, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.8666668
       objectReference: {fileID: 0}
     - target: {fileID: 4051158800441544268, guid: 76f23fdf39a88eb478c2e08fb6a456bc, type: 3}
       propertyPath: BoundingShape2D
@@ -26033,13 +26037,21 @@ PrefabInstance:
       propertyPath: Lookahead.Smoothing
       value: 2.7
       objectReference: {fileID: 0}
+    - target: {fileID: 6036663594276314363, guid: 76f23fdf39a88eb478c2e08fb6a456bc, type: 3}
+      propertyPath: Composition.ScreenPosition.x
+      value: 0.0041670203
+      objectReference: {fileID: 0}
+    - target: {fileID: 6036663594276314363, guid: 76f23fdf39a88eb478c2e08fb6a456bc, type: 3}
+      propertyPath: Composition.ScreenPosition.y
+      value: -0.07222223
+      objectReference: {fileID: 0}
     - target: {fileID: 7657089106058662276, guid: 76f23fdf39a88eb478c2e08fb6a456bc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.3251772
+      value: -2.265829
       objectReference: {fileID: 0}
     - target: {fileID: 7657089106058662276, guid: 76f23fdf39a88eb478c2e08fb6a456bc, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -7.25369
+      value: -5.83455
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
